@@ -21,6 +21,6 @@ Jabusgraph: 1.0.0
 
 3、去掉了es 7.17版本以下的**type**支持。
 
-3、增加了opensearch的支持。
+4、增加了opensearch的支持。
 
-4、停用了编译打包时候，连接Docker创建镜像的功能。
+5、停用了编译打包时候，连接Docker创建镜像的功能。
