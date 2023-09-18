@@ -124,6 +124,7 @@ public enum ReflectiveConfigOptionLoader {
             "org.janusgraph.diskstorage.hbase.HBaseStoreManager",
             "org.janusgraph.diskstorage.cql.CQLConfigOptions",
             "org.janusgraph.diskstorage.es.ElasticSearchIndex",
+            "org.janusgraph.diskstorage.opensearch.OpenSearchIndex",
             "org.janusgraph.diskstorage.solr.SolrIndex",
             "org.janusgraph.diskstorage.log.kcvs.KCVSLog",
             "org.janusgraph.diskstorage.log.kcvs.KCVSLogManager",

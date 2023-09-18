@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.janusgraph.diskstorage.es;
+package org.janusgraph.diskstorage.opensearch;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum ElasticMajorVersion {
+public enum OpenMajorVersion {
 
     SIX(6),
 
@@ -33,7 +33,7 @@ public enum ElasticMajorVersion {
 
     final int value;
 
-    ElasticMajorVersion(int value) {
+    OpenMajorVersion(int value) {
         this.value = value;
     }
 
@@ -41,17 +41,17 @@ public enum ElasticMajorVersion {
         return value;
     }
 
-    public static ElasticMajorVersion parse(final String value) {
+    public static OpenMajorVersion parse(final String value) {
         final Matcher m = value != null ? PATTERN.matcher(value) : null;
         switch (m != null && m.find() ? Integer.parseInt(m.group(1)) : -1) {
             case 3:
-                return ElasticMajorVersion.THREE;
+                return OpenMajorVersion.THREE;
             case 6:
-                return ElasticMajorVersion.SIX;
+                return OpenMajorVersion.SIX;
             case 7:
-                return ElasticMajorVersion.SEVEN;
+                return OpenMajorVersion.SEVEN;
             case 8:
-                return ElasticMajorVersion.EIGHT;
+                return OpenMajorVersion.EIGHT;
             default:
                 throw new IllegalArgumentException("Unsupported Elasticsearch server major version: " + value);
         }

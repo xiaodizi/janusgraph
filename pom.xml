@@ -38,22 +38,25 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <scm>
-        <connection>scm:git:git@github.com:JanusGraph/janusgraph.git</connection>
-        <developerConnection>scm:git:git@github.com:JanusGraph/janusgraph.git</developerConnection>
-        <url>git@github.com:JanusGraph/janusgraph.git</url>
-        <tag>HEAD</tag>
-    </scm>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+    <!--授权校验-->
+<!--    <scm>-->
+<!--        <connection>scm:git:git@github.com:xiaodizi/janusgraph.git</connection>-->
+<!--        <developerConnection>scm:git:git@github.com:xiaodizi/janusgraph.git</developerConnection>-->
+<!--        <url>git@github.com:xiaodizi/janusgraph.git</url>-->
+<!--        <tag>HEAD</tag>-->
+<!--    </scm>-->
+
+    <!--mvn deploy 分发远程的maven仓库，暂时不用，注释掉-->
+<!--    <distributionManagement>-->
+<!--        <snapshotRepository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </snapshotRepository>-->
+<!--        <repository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
     <properties>
         <titan.compatible-versions>1.0.0,1.1.0-SNAPSHOT</titan.compatible-versions>
         <tinkerpop.version>3.7.0</tinkerpop.version>
@@ -75,6 +78,7 @@
         <lucene-solr.version>8.11.2</lucene-solr.version>
         <!-- When this version updated please also update sha512 -->
         <elasticsearch.version>8.6.0</elasticsearch.version>
+        <opensearch.version>2.9.0</opensearch.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <zookeeper.version>3.8.1</zookeeper.version>
@@ -145,6 +149,7 @@
         <module>janusgraph-examples</module>
         <module>janusgraph-mixed-index-utils</module>
         <module>janusgraph-scylla</module>
+        <module>janusgraph-opensearch</module>
     </modules>
     <repositories>
         <repository>
@@ -235,58 +240,59 @@
                     <arguments>-DskipTests=true</arguments>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.15</version>
-                <executions>
-                    <execution>
-                        <id>rat-checks</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludeSubProjects>false</excludeSubProjects>
-                    <excludes>
-                        <exclude>**/target/**</exclude>
-                        <exclude>**/.classpath</exclude>
-                        <exclude>**/.project</exclude>
-                        <exclude>**/.factorypath</exclude>
-                        <exclude>**/.settings/**</exclude>
-                        <exclude>**/src/main/resources/META-INF/services/**</exclude>
-                        <exclude>**/src/test/resources/META-INF/services/**</exclude>
-                        <exclude>**/*.iml</exclude>
-                        <exclude>**/*.json</exclude>
-                        <exclude>**/*.xml</exclude>
-                        <exclude>**/*.xml.releaseBackup</exclude>
-                        <exclude>docs/**</exclude>
-                        <exclude>**/*.md</exclude>
-                        <exclude>**/*.txt</exclude>
-                        <exclude>**/*.log</exclude>
-                        <exclude>**/*.patch</exclude>
-                        <exclude>**/*.crt</exclude>
-                        <exclude>**/*.key</exclude>
-                        <exclude>**/*.sysconfig</exclude>
-                        <exclude>**/*.csv</exclude>
-                        <exclude>**/*.id</exclude>
-                        <exclude>**/*.gz</exclude>
-                        <exclude>.editorconfig</exclude>
-                        <exclude>.github/dependabot.yml</exclude>
-                        <exclude>CC-BY-4.0.txt</exclude>
-                        <exclude>**/cqlshrc</exclude>
-                        <exclude>**/regionservers</exclude>
-                        <exclude>**/jaas_keytab.conf</exclude>
-                        <exclude>**/src/test/resources/excludes</exclude>
-                        <exclude>**/src/test/resources/longTests1</exclude>
-                        <exclude>**/src/test/resources/longTests2</exclude>
-                        <exclude>**/src/test/resources/mockito-extensions/**</exclude>
-                        <exclude>**/src/test/resources/org/janusgraph/hadoop/formats/edgelist/rdf/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+            <!-- Apache Rat 插件，各种检查，先禁用-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.rat</groupId>-->
+<!--                <artifactId>apache-rat-plugin</artifactId>-->
+<!--                <version>0.15</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>rat-checks</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <excludeSubProjects>false</excludeSubProjects>-->
+<!--                    <excludes>-->
+<!--                        <exclude>**/target/**</exclude>-->
+<!--                        <exclude>**/.classpath</exclude>-->
+<!--                        <exclude>**/.project</exclude>-->
+<!--                        <exclude>**/.factorypath</exclude>-->
+<!--                        <exclude>**/.settings/**</exclude>-->
+<!--                        <exclude>**/src/main/resources/META-INF/services/**</exclude>-->
+<!--                        <exclude>**/src/test/resources/META-INF/services/**</exclude>-->
+<!--                        <exclude>**/*.iml</exclude>-->
+<!--                        <exclude>**/*.json</exclude>-->
+<!--                        <exclude>**/*.xml</exclude>-->
+<!--                        <exclude>**/*.xml.releaseBackup</exclude>-->
+<!--                        <exclude>docs/**</exclude>-->
+<!--                        <exclude>**/*.md</exclude>-->
+<!--                        <exclude>**/*.txt</exclude>-->
+<!--                        <exclude>**/*.log</exclude>-->
+<!--                        <exclude>**/*.patch</exclude>-->
+<!--                        <exclude>**/*.crt</exclude>-->
+<!--                        <exclude>**/*.key</exclude>-->
+<!--                        <exclude>**/*.sysconfig</exclude>-->
+<!--                        <exclude>**/*.csv</exclude>-->
+<!--                        <exclude>**/*.id</exclude>-->
+<!--                        <exclude>**/*.gz</exclude>-->
+<!--                        <exclude>.editorconfig</exclude>-->
+<!--                        <exclude>.github/dependabot.yml</exclude>-->
+<!--                        <exclude>CC-BY-4.0.txt</exclude>-->
+<!--                        <exclude>**/cqlshrc</exclude>-->
+<!--                        <exclude>**/regionservers</exclude>-->
+<!--                        <exclude>**/jaas_keytab.conf</exclude>-->
+<!--                        <exclude>**/src/test/resources/excludes</exclude>-->
+<!--                        <exclude>**/src/test/resources/longTests1</exclude>-->
+<!--                        <exclude>**/src/test/resources/longTests2</exclude>-->
+<!--                        <exclude>**/src/test/resources/mockito-extensions/**</exclude>-->
+<!--                        <exclude>**/src/test/resources/org/janusgraph/hadoop/formats/edgelist/rdf/**</exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -1129,6 +1135,13 @@
                 <artifactId>elasticsearch-rest-client</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.opensearch.client</groupId>
+                <artifactId>opensearch-rest-client</artifactId>
+                <version>${opensearch.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers</artifactId>

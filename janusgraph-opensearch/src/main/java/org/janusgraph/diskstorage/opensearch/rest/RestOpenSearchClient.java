@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.janusgraph.diskstorage.es.rest;
+package org.janusgraph.diskstorage.opensearch.rest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -28,19 +28,18 @@ import org.apache.tinkerpop.shaded.jackson.databind.ObjectReader;
 import org.apache.tinkerpop.shaded.jackson.databind.ObjectWriter;
 import org.apache.tinkerpop.shaded.jackson.databind.SerializationFeature;
 import org.apache.tinkerpop.shaded.jackson.databind.module.SimpleModule;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.ResponseException;
-import org.elasticsearch.client.RestClient;
 import org.janusgraph.core.attribute.Geoshape;
-import org.janusgraph.diskstorage.es.ElasticMajorVersion;
-import org.janusgraph.diskstorage.es.ElasticSearchClient;
-import org.janusgraph.diskstorage.es.ElasticSearchMutation;
-import org.janusgraph.diskstorage.es.mapping.IndexMapping;
-import org.janusgraph.diskstorage.es.mapping.TypedIndexMappings;
-import org.janusgraph.diskstorage.es.mapping.TypelessIndexMappings;
-import org.janusgraph.diskstorage.es.rest.RestBulkResponse.RestBulkItemResponse;
-import org.janusgraph.diskstorage.es.script.ESScriptResponse;
+import org.janusgraph.diskstorage.opensearch.OpenMajorVersion;
+import org.janusgraph.diskstorage.opensearch.OpenSearchClient;
+import org.janusgraph.diskstorage.opensearch.OpenSearchMutation;
+import org.janusgraph.diskstorage.opensearch.mapping.IndexMapping;
+import org.janusgraph.diskstorage.opensearch.mapping.TypedIndexMappings;
+import org.janusgraph.diskstorage.opensearch.mapping.TypelessIndexMappings;
+import org.janusgraph.diskstorage.opensearch.script.ESScriptResponse;
+import org.opensearch.client.Request;
+import org.opensearch.client.Response;
+import org.opensearch.client.ResponseException;
+import org.opensearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +55,9 @@ import java.util.stream.Collectors;
 
 import static org.janusgraph.util.encoding.StringEncoding.UTF8_CHARSET;
 
-public class RestElasticSearchClient implements ElasticSearchClient {
+public class RestOpenSearchClient implements OpenSearchClient {
 
-    private static final Logger log = LoggerFactory.getLogger(RestElasticSearchClient.class);
+    private static final Logger log = LoggerFactory.getLogger(RestOpenSearchClient.class);
 
     private static final String REQUEST_TYPE_DELETE = "DELETE";
     private static final String REQUEST_TYPE_GET = "GET";
@@ -89,13 +88,13 @@ public class RestElasticSearchClient implements ElasticSearchClient {
         mapWriter = mapper.writerWithView(Map.class);
     }
 
-    private static final ElasticMajorVersion DEFAULT_VERSION = ElasticMajorVersion.EIGHT;
+    private static final OpenMajorVersion DEFAULT_VERSION = OpenMajorVersion.EIGHT;
 
     private static final Function<StringBuilder, StringBuilder> APPEND_OP = sb -> sb.append(sb.length() == 0 ? REQUEST_PARAM_BEGINNING : REQUEST_PARAM_SEPARATOR);
 
     private final RestClient delegate;
 
-    private ElasticMajorVersion majorVersion;
+    private OpenMajorVersion majorVersion;
 
     private String bulkRefresh;
 
@@ -111,11 +110,11 @@ public class RestElasticSearchClient implements ElasticSearchClient {
 
     private final String retryOnConflictKey;
     
-    public RestElasticSearchClient(RestClient delegate, int scrollKeepAlive, boolean useMappingTypesForES7) {
+    public RestOpenSearchClient(RestClient delegate, int scrollKeepAlive, boolean useMappingTypesForES7) {
         this.delegate = delegate;
         majorVersion = getMajorVersion();
         this.scrollKeepAlive = scrollKeepAlive+"s";
-        esVersion7 = ElasticMajorVersion.SEVEN.equals(majorVersion);
+        esVersion7 = OpenMajorVersion.SEVEN.equals(majorVersion);
         useMappingTypes = majorVersion.getValue() < 7 || (useMappingTypesForES7 && esVersion7);
         retryOnConflictKey = majorVersion.getValue() >= 7 ? "retry_on_conflict" : "_retry_on_conflict";
     }
@@ -126,7 +125,7 @@ public class RestElasticSearchClient implements ElasticSearchClient {
     }
 
     @Override
-    public ElasticMajorVersion getMajorVersion() {
+    public OpenMajorVersion getMajorVersion() {
         if (majorVersion != null) {
             return majorVersion;
         }
@@ -136,7 +135,7 @@ public class RestElasticSearchClient implements ElasticSearchClient {
             final Response response = delegate.performRequest(INFO_REQUEST);
             try (final InputStream inputStream = response.getEntity().getContent()) {
                 final ClusterInfo info = mapper.readValue(inputStream, ClusterInfo.class);
-                majorVersion = ElasticMajorVersion.parse(info.getVersion() != null ? (String) info.getVersion().get("number") : null);
+                majorVersion = OpenMajorVersion.parse(info.getVersion() != null ? (String) info.getVersion().get("number") : null);
             }
         } catch (final IOException e) {
             log.warn("Unable to determine Elasticsearch server version. Default to {}.", majorVersion, e);
@@ -290,17 +289,19 @@ public class RestElasticSearchClient implements ElasticSearchClient {
 
         Request request;
 
-        if(useMappingTypes){
-            request = new Request(REQUEST_TYPE_PUT,
-                REQUEST_SEPARATOR + indexName + REQUEST_SEPARATOR + "_mapping" + REQUEST_SEPARATOR + typeName);
-            if(esVersion7){
-                request.addParameter(INCLUDE_TYPE_NAME_PARAMETER, "true");
-            }
-        } else {
-            request = new Request(REQUEST_TYPE_PUT,
-                REQUEST_SEPARATOR + indexName + REQUEST_SEPARATOR + "_mapping");
-        }
+//        if(useMappingTypes){
+//            request = new Request(REQUEST_TYPE_PUT,
+//                REQUEST_SEPARATOR + indexName + REQUEST_SEPARATOR + "_mapping" + REQUEST_SEPARATOR + typeName);
+//            if(esVersion7){
+//                request.addParameter(INCLUDE_TYPE_NAME_PARAMETER, "true");
+//            }
+//        } else {
+//            request = new Request(REQUEST_TYPE_PUT,
+//                REQUEST_SEPARATOR + indexName + REQUEST_SEPARATOR + "_mapping");
+//        }
 
+        request = new Request(REQUEST_TYPE_PUT,
+            REQUEST_SEPARATOR + indexName + REQUEST_SEPARATOR + "_mapping");
         performRequest(request, mapWriter.writeValueAsBytes(mapping));
     }
 
@@ -364,11 +365,13 @@ public class RestElasticSearchClient implements ElasticSearchClient {
         }
     }
 
+
     @Override
-    public void bulkRequest(List<ElasticSearchMutation> requests, String ingestPipeline) throws IOException {
+    public void bulkRequest(List<OpenSearchMutation> requests, String ingestPipeline) throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        for (final ElasticSearchMutation request : requests) {
+        for (final OpenSearchMutation request : requests) {
             Map<String, Object> requestData = new HashMap<>();
+
 //            if (useMappingTypes) {
 //                requestData.put("_index", request.getIndex());
 //                requestData.put("_type", request.getType());
@@ -381,7 +384,7 @@ public class RestElasticSearchClient implements ElasticSearchClient {
             requestData.put("_index", request.getIndex());
             requestData.put("_id", request.getId());
 
-            if (retryOnConflict != null && request.getRequestType() == ElasticSearchMutation.RequestType.UPDATE) {
+            if (retryOnConflict != null && request.getRequestType() == OpenSearchMutation.RequestType.UPDATE) {
                 requestData.put(retryOnConflictKey, retryOnConflict);
             }
 
@@ -410,10 +413,10 @@ public class RestElasticSearchClient implements ElasticSearchClient {
             final List<Object> errors = bulkResponse.getItems().stream()
                 .flatMap(item -> item.values().stream())
                 .filter(item -> item.getError() != null && item.getStatus() != 404)
-                .map(RestBulkItemResponse::getError).collect(Collectors.toList());
+                .map(RestBulkResponse.RestBulkItemResponse::getError).collect(Collectors.toList());
             if (!errors.isEmpty()) {
                 errors.forEach(error -> log.error("Failed to execute ES query: {}", error));
-                throw new IOException("Failure(s) in Elasticsearch bulk request: " + errors);
+                throw new IOException("Failure(s) in Opensearch bulk request: " + errors);
             }
         }
     }
@@ -429,7 +432,7 @@ public class RestElasticSearchClient implements ElasticSearchClient {
 
         final byte[] requestDataBytes = mapper.writeValueAsBytes(requestData);
         if (log.isDebugEnabled()) {
-            log.debug("Elasticsearch request: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestData));
+            log.debug("Opensearch request: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestData));
         }
 
         final Response response = performRequest(request, requestDataBytes);
@@ -536,7 +539,7 @@ public class RestElasticSearchClient implements ElasticSearchClient {
 
         final byte[] requestDataBytes = mapper.writeValueAsBytes(requestData);
         if (log.isDebugEnabled()) {
-            log.debug("Elasticsearch request: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestData));
+            log.debug("Opensearch request: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestData));
         }
 
         final Response response = performRequest(request, requestDataBytes);

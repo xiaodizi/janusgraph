@@ -48,6 +48,7 @@ public class JanusGraphApp extends GraphApp {
     protected static final String LUCENE = "lucene";
     protected static final String ELASTICSEARCH = "elasticsearch";
     protected static final String SOLR = "solr";
+    protected static final String OPENSEARCH = "opensearch";
 
     protected boolean useMixedIndex;
     protected String mixedIndexConfigName;

@@ -29,7 +29,8 @@ import java.util.Set;
 public enum StandardIndexProvider {
     LUCENE("org.janusgraph.diskstorage.lucene.LuceneIndex", "lucene"),
     ELASTICSEARCH("org.janusgraph.diskstorage.es.ElasticSearchIndex", Arrays.asList("elasticsearch", "es")),
-    SOLR("org.janusgraph.diskstorage.solr.SolrIndex", "solr");
+    SOLR("org.janusgraph.diskstorage.solr.SolrIndex", "solr"),
+    OPENSEARCH("org.janusgraph.diskstorage.opensearch.OpenSearchIndex","opensearch");
 
     private static final Set<String> ALL_SHORTHANDS;
     private static final Map<String, String> ALL_MANAGER_CLASSES;

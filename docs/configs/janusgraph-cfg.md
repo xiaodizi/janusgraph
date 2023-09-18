@@ -109,7 +109,7 @@ Configuration options for the individual indexing backends
 
 | Name | Description | Datatype | Default Value | Mutability |
 | ---- | ---- | ---- | ---- | ---- |
-| index.[X].backend | The indexing backend used to extend and optimize JanusGraph's query functionality. This setting is optional.  JanusGraph can use multiple heterogeneous index backends.  Hence, this option can appear more than once, so long as the user-defined name between "index" and "backend" is unique among appearances.Similar to the storage backend, this should be set to one of JanusGraph's built-in shorthand names for its standard index backends (shorthands: lucene, elasticsearch, es, solr) or to the full package and classname of a custom/third-party IndexProvider implementation. | String | elasticsearch | GLOBAL_OFFLINE |
+| index.[X].backend | The indexing backend used to extend and optimize JanusGraph's query functionality. This setting is optional.  JanusGraph can use multiple heterogeneous index backends.  Hence, this option can appear more than once, so long as the user-defined name between "index" and "backend" is unique among appearances.Similar to the storage backend, this should be set to one of JanusGraph's built-in shorthand names for its standard index backends (shorthands: lucene, elasticsearch, es, solr, opensearch) or to the full package and classname of a custom/third-party IndexProvider implementation. | String | elasticsearch | GLOBAL_OFFLINE |
 | index.[X].conf-file | Path to a configuration file for those indexing backends that require/support a separate config file | String | (no default value) | MASKABLE |
 | index.[X].directory | Directory to store index data locally | String | (no default value) | MASKABLE |
 | index.[X].hostname | The hostname or comma-separated list of hostnames of index backend servers.  This is only applicable to some index backends, such as elasticsearch and solr. | String[] | 127.0.0.1 | MASKABLE |
@@ -238,6 +238,101 @@ Configuration options for SSL Truststore.
 | ---- | ---- | ---- | ---- | ---- |
 | index.[X].elasticsearch.ssl.truststore.location | Marks the location of the SSL Truststore. | String |  | LOCAL |
 | index.[X].elasticsearch.ssl.truststore.password | The password to access SSL Truststore. | String |  | LOCAL |
+
+### index.[X].opensearch
+Opensearch index configuration
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.bulk-refresh | Elasticsearch bulk API refresh setting used to control when changes made by this request are made visible to search | String | false | MASKABLE |
+| index.[X].opensearch.client-keep-alive | Set a keep-alive timeout (in milliseconds) | Long | (no default value) | GLOBAL_OFFLINE |
+| index.[X].opensearch.connect-timeout | Sets the maximum connection timeout (in milliseconds). | Integer | 1000 | MASKABLE |
+| index.[X].opensearch.enable_index_names_cache | Enables cache for generated index store names. It is recommended to always enable index store names cache unless you have more then 50000 indexes per index store. | Boolean | true | MASKABLE |
+| index.[X].opensearch.health-request-timeout | When JanusGraph initializes its ES backend, JanusGraph waits up to this duration for the ES cluster health to reach at least yellow status.  This string should be formatted as a natural number followed by the lowercase letter "s", e.g. 3s or 60s. | String | 30s | MASKABLE |
+| index.[X].opensearch.interface | Interface for connecting to Elasticsearch. TRANSPORT_CLIENT and NODE were previously supported, but now are required to migrate to REST_CLIENT. See the JanusGraph upgrade instructions for more details. | String | REST_CLIENT | MASKABLE |
+| index.[X].opensearch.retry_on_conflict | Specify how many times should the operation be retried when a conflict occurs. | Integer | 0 | MASKABLE |
+| index.[X].opensearch.scroll-keep-alive | How long (in seconds) elasticsearch should keep alive the scroll context. | Integer | 60 | GLOBAL_OFFLINE |
+| index.[X].opensearch.setup-max-open-scroll-contexts | Whether JanusGraph should setup max_open_scroll_context to maximum value for the cluster or not. | Boolean | true | MASKABLE |
+| index.[X].opensearch.socket-timeout | Sets the maximum socket timeout (in milliseconds). | Integer | 30000 | MASKABLE |
+| index.[X].opensearch.use-all-field | Whether JanusGraph should add an "all" field mapping. When enabled field mappings will include a "copy_to" parameter referencing the "all" field. This is supported since Elasticsearch 6.x  and is required when using wildcard fields starting in Elasticsearch 6.x. | Boolean | true | GLOBAL_OFFLINE |
+| index.[X].opensearch.use-mapping-for-es7 | Mapping types are deprecated in ElasticSearch 7 and JanusGraph will not use mapping types by default for ElasticSearch 7 but if you want to preserve mapping types, you can setup this parameter to true. If you are updating ElasticSearch from 6 to 7 and you don't want to reindex your indexes, you may setup this parameter to true but we do recommend to reindex your indexes and don't use this parameter. | Boolean | false | MASKABLE |
+
+### index.[X].opensearch.create
+Settings related to index creation
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.create.allow-mapping-update | Whether JanusGraph should allow a mapping update when registering an index. Only applicable when use-external-mappings is true. | Boolean | false | MASKABLE |
+| index.[X].opensearch.create.sleep | How long to sleep, in milliseconds, between the successful completion of a (blocking) index creation request and the first use of that index.  This only applies when creating an index in ES, which typically only happens the first time JanusGraph is started on top of ES. If the index JanusGraph is configured to use already exists, then this setting has no effect. | Long | 200 | MASKABLE |
+| index.[X].opensearch.create.use-external-mappings | Whether JanusGraph should make use of an external mapping when registering an index. | Boolean | false | MASKABLE |
+
+### index.[X].opensearch.create.ext
+Overrides for arbitrary settings applied at index creation.
+See [Elasticsearch](../index-backend/elasticsearch.md#index-creation-options), The full list of possible setting is available at [Elasticsearch index settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings).
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.create.ext.number_of_replicas | The number of replicas each primary shard has | Integer | 1 | MASKABLE |
+| index.[X].opensearch.create.ext.number_of_shards | The number of primary shards that an index should have.Default value is 5 on ES 6 and 1 on ES 7 | Integer | (no default value) | MASKABLE |
+
+### index.[X].opensearch.http.auth
+Configuration options for HTTP(S) authentication.
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.http.auth.type | Authentication type to be used for HTTP(S) access. Available options are `NONE`, `BASIC` and `CUSTOM`. | String | NONE | LOCAL |
+
+### index.[X].opensearch.http.auth.basic
+Configuration options for HTTP(S) Basic authentication.
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.http.auth.basic.password | Password for HTTP(S) authentication. | String |  | LOCAL |
+| index.[X].opensearch.http.auth.basic.realm | Realm value for HTTP(S) authentication. If empty, any realm is accepted. | String |  | LOCAL |
+| index.[X].opensearch.http.auth.basic.username | Username for HTTP(S) authentication. | String |  | LOCAL |
+
+### index.[X].opensearch.http.auth.custom
+Configuration options for custom HTTP(S) authenticator.
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.http.auth.custom.authenticator-args | Comma-separated custom authenticator constructor arguments. | String[] |  | LOCAL |
+| index.[X].opensearch.http.auth.custom.authenticator-class | Authenticator fully qualified class name. | String |  | LOCAL |
+
+### index.[X].opensearch.ssl
+Elasticsearch SSL configuration
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.ssl.allow-self-signed-certificates | Controls the accepting of the self-signed SSL certificates. | Boolean | false | LOCAL |
+| index.[X].opensearch.ssl.disable-hostname-verification | Disables the SSL hostname verification if set to true. Hostname verification is enabled by default. | Boolean | false | LOCAL |
+| index.[X].opensearch.ssl.enabled | Controls use of the SSL connection to Elasticsearch. | Boolean | false | LOCAL |
+
+### index.[X].opensearch.ssl.keystore
+Configuration options for SSL Keystore.
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.ssl.keystore.keypassword | The password to access the key in the SSL Keystore. If the option is not present, the value of "storepassword" is used. | String |  | LOCAL |
+| index.[X].opensearch.ssl.keystore.location | Marks the location of the SSL Keystore. | String |  | LOCAL |
+| index.[X].opensearch.ssl.keystore.storepassword | The password to access SSL Keystore. | String |  | LOCAL |
+
+### index.[X].opensearch.ssl.truststore
+Configuration options for SSL Truststore.
+
+
+| Name | Description | Datatype | Default Value | Mutability |
+| ---- | ---- | ---- | ---- | ---- |
+| index.[X].opensearch.ssl.truststore.location | Marks the location of the SSL Truststore. | String |  | LOCAL |
+| index.[X].opensearch.ssl.truststore.password | The password to access SSL Truststore. | String |  | LOCAL |
 
 ### index.[X].solr
 Solr index configuration

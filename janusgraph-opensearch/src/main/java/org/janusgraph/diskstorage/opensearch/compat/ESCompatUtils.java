@@ -12,26 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.janusgraph.diskstorage.es.compat;
+package org.janusgraph.diskstorage.opensearch.compat;
 
 import org.janusgraph.diskstorage.BackendException;
 import org.janusgraph.diskstorage.PermanentBackendException;
-import org.janusgraph.diskstorage.es.ElasticMajorVersion;
+import org.janusgraph.diskstorage.opensearch.OpenMajorVersion;
 
 public class ESCompatUtils {
 
-    public static AbstractESCompat acquireCompatForVersion(ElasticMajorVersion elasticMajorVersion) throws BackendException {
+    public static AbstractESCompat acquireCompatForVersion(OpenMajorVersion elasticMajorVersion) throws BackendException {
         switch (elasticMajorVersion) {
-            case SIX:
-                return new ES6Compat();
-            case SEVEN:
-                return new ES7Compat();
-            case EIGHT:
-                return new ES8Compat();
             case THREE:
                 return new OS3Compat();
             default:
-                throw new PermanentBackendException("Unsupported Elasticsearch version: " + elasticMajorVersion);
+                throw new PermanentBackendException("Unsupported Opensearch version: " + elasticMajorVersion);
         }
     }
 }
