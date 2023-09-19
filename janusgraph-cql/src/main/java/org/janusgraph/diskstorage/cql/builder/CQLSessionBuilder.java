@@ -16,6 +16,7 @@ package org.janusgraph.diskstorage.cql.builder;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.internal.core.config.typesafe.DefaultDriverConfigLoader;
 import com.typesafe.config.Config;
@@ -62,7 +63,7 @@ public class CQLSessionBuilder {
         }
 
         Optional<Supplier<Config>> internalConfigurationSupplier = getInternalConfigSupplier(configuration, driverConfigLoader == null);
-        final CqlSessionBuilder builder = CqlSession.builder();
+        final CqlSessionBuilder builder = CqlSession.builder().withConfigLoader(DriverConfigLoader.programmaticBuilder().withDuration(DefaultDriverOption.REQUEST_TIMEOUT,Duration.ofMillis(15000)).build());
 
         if(internalConfigurationSupplier.isPresent()){
             DriverConfigLoader internalDriverConfigLoader = new DefaultDriverConfigLoader(
