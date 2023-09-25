@@ -92,7 +92,7 @@ public enum ParameterType {
         return CUSTOM_PARAMETER_PREFIX + name;
     }
 
-    public static List<Parameter> getCustomParameters(Parameter[] parameters){
+    public static List<Parameter<?>> getCustomParameters(Parameter[] parameters){
 
         return Arrays.stream(parameters)
             .filter(p -> p.key().startsWith(CUSTOM_PARAMETER_PREFIX))
