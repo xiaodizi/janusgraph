@@ -2,9 +2,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.janusgraph</groupId>
+        <groupId>com.ratutech.ratudb.janusgraph</groupId>
         <artifactId>janusgraph</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>janusgraph-scylla</artifactId>
@@ -29,7 +29,7 @@
         <!-- Test dependency janusgraph-backend-testutils purposely first -->
         <!-- Pulls gremlin-server, which originally pulled metrics-core 3.0.2, conflicting with metrics-core 4.x -->
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-backend-testutils</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -52,7 +52,7 @@
         <!-- End logging backends. -->
         <!-- Compile Dependencies -->
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-cql</artifactId>
             <version>${project.version}</version>
             <exclusions>
@@ -68,7 +68,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-hadoop</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
@@ -140,7 +140,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>scylla-hadoop-util</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
@@ -148,7 +148,7 @@
 
         <!-- Test Dependencies -->
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-cql</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
@@ -167,7 +167,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-hadoop</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>

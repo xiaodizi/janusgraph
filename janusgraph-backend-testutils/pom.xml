@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.janusgraph</groupId>
+        <groupId>com.ratutech.ratudb.janusgraph</groupId>
         <artifactId>janusgraph</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>janusgraph-backend-testutils</artifactId>
@@ -27,7 +27,7 @@
         <!-- End logging backends. -->
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
             <version>${project.version}</version>
         </dependency>

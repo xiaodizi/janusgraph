@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.janusgraph</groupId>
+        <groupId>com.ratutech.ratudb.janusgraph</groupId>
         <artifactId>janusgraph</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>janusgraph-all</artifactId>
@@ -27,7 +27,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-grpc</artifactId>
             <version>${project.version}</version>
             <exclusions>
@@ -38,52 +38,52 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-server</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-inmemory</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>cassandra-hadoop-util</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-cql</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-berkeleyje</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-hbase</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-bigtable</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-hadoop</artifactId>
             <version>${project.version}</version>
             <exclusions>
@@ -94,27 +94,27 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-es</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-opensearch</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-solr</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-lucene</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.janusgraph</groupId>
+            <groupId>com.ratutech.ratudb.janusgraph</groupId>
             <artifactId>janusgraph-mixed-index-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -218,7 +218,7 @@
                 </dependency>
                 <!-- End logging backends. -->
                 <dependency>
-                    <groupId>org.janusgraph</groupId>
+                    <groupId>com.ratutech.ratudb.janusgraph</groupId>
                     <artifactId>janusgraph-backend-testutils</artifactId>
                     <version>${project.version}</version>
                     <scope>test</scope>

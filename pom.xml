@@ -2,9 +2,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.janusgraph</groupId>
+    <groupId>com.ratutech.ratudb.janusgraph</groupId>
     <artifactId>janusgraph</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <prerequisites>
         <maven>3.2.5</maven>
@@ -13,12 +13,14 @@
     <url>https://janusgraph.org</url>
 
     <description>
-        JanusGraph is a distributed graph database optimized for processing massive-scale graphs represented over a machine
-        cluster.
-        JanusGraph separates the concerns of graph processing and manipulation from storing the graph on disk,
-        delegating that concern to an extensible set of persistence solutions.
+        This is our version of JanusGraph adapted to our needs, thanks to the JanusGraph development team.Based on version 1.0.0.
     </description>
     <developers>
+        <developer>
+            <name>lei.fu</name>
+            <email>305297641@qq.com</email>
+            <url>https://github.com/Ratu-Tech</url>
+        </developer>
         <developer>
             <name>JanusGraph members</name>
             <email>janusgraph-dev@lists.lfaidata.foundation</email>
@@ -39,24 +41,14 @@
         </license>
     </licenses>
     <!--授权校验-->
-<!--    <scm>-->
-<!--        <connection>scm:git:git@github.com:xiaodizi/janusgraph.git</connection>-->
-<!--        <developerConnection>scm:git:git@github.com:xiaodizi/janusgraph.git</developerConnection>-->
-<!--        <url>git@github.com:xiaodizi/janusgraph.git</url>-->
-<!--        <tag>HEAD</tag>-->
-<!--    </scm>-->
+    <scm>
+        <connection>scm:ssh://git@gitlab.ratu.ltd:30022/operation-ratudb/ratu-janusgraph.git</connection>
+        <developerConnection>scm:ssh://git@gitlab.ratu.ltd:30022/operation-ratudb/ratu-janusgraph.git</developerConnection>
+        <url>ssh://git@gitlab.ratu.ltd:30022/operation-ratudb/ratu-janusgraph.git</url>
+        <tag>master</tag>
+    </scm>
 
-    <!--mvn deploy 分发远程的maven仓库，暂时不用，注释掉-->
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+
     <properties>
         <titan.compatible-versions>1.0.0,1.1.0-SNAPSHOT</titan.compatible-versions>
         <tinkerpop.version>3.7.0</tinkerpop.version>
@@ -151,19 +143,6 @@
         <module>janusgraph-scylla</module>
         <module>janusgraph-opensearch</module>
     </modules>
-    <repositories>
-        <repository>
-            <id>apache-snapshots</id>
-            <name>repository.apache.org snapshots</name>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <build>
         <directory>${basedir}/target</directory>
         <plugins>
@@ -240,59 +219,6 @@
                     <arguments>-DskipTests=true</arguments>
                 </configuration>
             </plugin>
-            <!-- Apache Rat 插件，各种检查，先禁用-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.rat</groupId>-->
-<!--                <artifactId>apache-rat-plugin</artifactId>-->
-<!--                <version>0.15</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>rat-checks</id>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <excludeSubProjects>false</excludeSubProjects>-->
-<!--                    <excludes>-->
-<!--                        <exclude>**/target/**</exclude>-->
-<!--                        <exclude>**/.classpath</exclude>-->
-<!--                        <exclude>**/.project</exclude>-->
-<!--                        <exclude>**/.factorypath</exclude>-->
-<!--                        <exclude>**/.settings/**</exclude>-->
-<!--                        <exclude>**/src/main/resources/META-INF/services/**</exclude>-->
-<!--                        <exclude>**/src/test/resources/META-INF/services/**</exclude>-->
-<!--                        <exclude>**/*.iml</exclude>-->
-<!--                        <exclude>**/*.json</exclude>-->
-<!--                        <exclude>**/*.xml</exclude>-->
-<!--                        <exclude>**/*.xml.releaseBackup</exclude>-->
-<!--                        <exclude>docs/**</exclude>-->
-<!--                        <exclude>**/*.md</exclude>-->
-<!--                        <exclude>**/*.txt</exclude>-->
-<!--                        <exclude>**/*.log</exclude>-->
-<!--                        <exclude>**/*.patch</exclude>-->
-<!--                        <exclude>**/*.crt</exclude>-->
-<!--                        <exclude>**/*.key</exclude>-->
-<!--                        <exclude>**/*.sysconfig</exclude>-->
-<!--                        <exclude>**/*.csv</exclude>-->
-<!--                        <exclude>**/*.id</exclude>-->
-<!--                        <exclude>**/*.gz</exclude>-->
-<!--                        <exclude>.editorconfig</exclude>-->
-<!--                        <exclude>.github/dependabot.yml</exclude>-->
-<!--                        <exclude>CC-BY-4.0.txt</exclude>-->
-<!--                        <exclude>**/cqlshrc</exclude>-->
-<!--                        <exclude>**/regionservers</exclude>-->
-<!--                        <exclude>**/jaas_keytab.conf</exclude>-->
-<!--                        <exclude>**/src/test/resources/excludes</exclude>-->
-<!--                        <exclude>**/src/test/resources/longTests1</exclude>-->
-<!--                        <exclude>**/src/test/resources/longTests2</exclude>-->
-<!--                        <exclude>**/src/test/resources/mockito-extensions/**</exclude>-->
-<!--                        <exclude>**/src/test/resources/org/janusgraph/hadoop/formats/edgelist/rdf/**</exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -356,6 +282,62 @@
                         <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <deploymentName>janusgraph-001</deploymentName>
+                </configuration>
+            </plugin>
+            <!--   source源码插件   官方要求 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--   javadoc插件  官方要求  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.4</version>
+                <configuration>
+                    <!--   没有配置环境变量，可知道GnuPG路径 -->
+                    <executable>/usr/local/bin/gpg</executable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
